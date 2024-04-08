@@ -48,7 +48,7 @@ def zip_array(array, data=0.):  # 压缩成稀疏数组
         for j in range(len(array[0])):
             if array[i][j] != data:
                 zip_res.append([i, j, array[i][j]])
-    return np.array(zip_res)
+    return np.array(zip_res, dtype=object)  # handcode fqf
 
 
 def recovery_array(array, data=0.):  # 恢复数组
