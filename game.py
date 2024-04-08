@@ -806,7 +806,7 @@ class Game(object):
         _count = 0
         while True:
             _count += 1
-            if _count % 20 == 0:
+            if _count % 10 == 0: # handcode fqf
                 start_time = time.time()
                 move, move_probs = player.get_action(self.board,
                                                      temp=temp,
@@ -823,6 +823,7 @@ class Game(object):
             # 执行一步落子
             self.board.do_move(move)
             end, winner = self.board.game_end()
+            
             if end:
                 # 从每一个状态state对应的玩家的视角保存胜负信息
                 winner_z = np.zeros(len(current_players))

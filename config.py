@@ -12,7 +12,7 @@ CONFIG = {
     'epochs' : 5,  # 每次更新的train_step数量
     'game_batch_num': 3000,  # 训练更新的次数
     'use_frame': 'pytorch',  # paddle or pytorch根据自己的环境进行切换
-    'train_update_interval': 600,  #模型更新间隔时间
+    'train_update_interval': 6,  #模型更新间隔时间  handcode fqf
     'use_redis': False, # 数据存储方式
     'redis_host': 'localhost',
     'redis_port': 6379,
