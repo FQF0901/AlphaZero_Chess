@@ -817,6 +817,7 @@ class Game(object):
                                                      temp=temp,
                                                      return_prob=1)
             # 保存自我对弈的数据
+            # 注意这里是每次get_action后都立即存入list,而非end并backpropagate后再append(): handcode fqf
             states.append(self.board.current_state())
             mcts_probs.append(move_probs)
             current_players.append(self.board.current_player_id)
@@ -824,8 +825,9 @@ class Game(object):
             self.board.do_move(move)
             end, winner = self.board.game_end()
             
-            if end:
+            if end: # 当每一局结束后，推出该函数并将play_data存入pickle: handcode fqf
                 # 从每一个状态state对应的玩家的视角保存胜负信息
+                # 最重要的一点在这里：对弈分胜负后，给每个state对应的winner赋值，用于value_net的训练。对应Q*中的Node.Q: handcode fqf
                 winner_z = np.zeros(len(current_players))
                 if winner != -1:
                     winner_z[np.array(current_players) == winner] = 1.0
@@ -838,6 +840,7 @@ class Game(object):
                     else:
                         print('Game end. Tie')
 
+                # zip(states, mcts_probs, winner_z)就是 play_data，要放在data_buffer里存入pickle的: handcode fqf
                 return winner, zip(states, mcts_probs, winner_z)
 
 

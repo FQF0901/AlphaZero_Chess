@@ -82,6 +82,7 @@ class CollectPipeline:
         # 收集自我对弈的数据
         for i in range(n_games):
             self.load_model()  # 从本体处加载最新模型
+            # 本局结束才会退出start_self_play，并将play_data存储: handcode fqf
             winner, play_data = self.game.start_self_play(self.mcts_player, temp=self.temp, is_shown=False)
             play_data = list(play_data)[:]
             self.episode_len = len(play_data)
@@ -119,8 +120,12 @@ class CollectPipeline:
                 else:
                     self.data_buffer.extend(play_data)
                     self.iters += 1
+            # data_dict 是一个字典对象，包含两个键值对: handcode fqf
             data_dict = {'data_buffer': self.data_buffer, 'iters': self.iters}
+            # 打开一个文件，路径为 CONFIG['train_data_buffer_path']，使用二进制写入模式 'wb': handcode fqf
             with open(CONFIG['train_data_buffer_path'], 'wb') as data_file:
+                # 使用 pickle.dump 函数将 data_dict 中的数据以二进制形式写入到打开的文件对象 data_file 中: handcode fqf
+                # pickle 可以方便地保存 Python 中的复杂数据结构，如字典、列表等: handcode fqf
                 pickle.dump(data_dict, data_file)
         return self.iters
 
