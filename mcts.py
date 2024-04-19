@@ -135,7 +135,7 @@ class MCTS(object):
         act_visits= [(act, node._n_visits)
                      for act, node in self._root._children.items()]
         acts, visits = zip(*act_visits)
-        act_probs = softmax(1.0 / temp * np.log(np.array(visits) + 1e-10))
+        act_probs = softmax(1.0 / temp * np.log(np.array(visits) + 1e-10))  # 较大的 temp 会使得概率分布更加均匀，而较小的 temp 则会增加对访问次数较高的动作的偏好性。通过取对数，可以将大的访问次数转换为相对较小的值，同时保留了它们之间的相对大小关系。这有助于减小数据的范围，使得计算更加稳定
         return acts, act_probs
 
     def update_with_move(self, last_move):

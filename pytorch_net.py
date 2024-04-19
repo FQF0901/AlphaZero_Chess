@@ -72,7 +72,7 @@ class Net(nn.Module):
         policy = self.policy_act(policy)
         policy = torch.reshape(policy, [-1, 16 * 10 * 9])
         policy = self.policy_fc(policy)
-        policy = F.log_softmax(policy)
+        policy = F.log_softmax(policy)  # 先对输入进行 softmax 操作，然后再取对数: 好处是，在计算交叉熵损失时，可以直接使用对数概率，避免数值上的不稳定性
         # 价值头
         value = self.value_conv(x)
         value = self.value_bn(value)
